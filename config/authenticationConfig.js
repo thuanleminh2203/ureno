@@ -6,18 +6,18 @@ module.exports = jwt;
 
 function jwt() {
     const secret = process.env.TOKEN_SECRECT
+
     return expressJwt({ secret, algorithms: ['HS256'], isRevoked }).unless({
         path: [
             // public routes that don't require authentication
             '/oauth/register',
-            '/oauth/login'
-
+            '/oauth/login',
+            /^\/api-docs\/.*/
         ]
     });
 }
 
 async function isRevoked(req, payload, done) {
-
     // // revoke token if user no longer exists
     if (!payload) {
         return done(null, true);

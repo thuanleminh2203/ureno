@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs')
 const mongoose = require('mongoose')
 const { verify } = require('../externalApi/paymentHubApi')
 const User = mongoose.model('user')
+const BadRequestException = require('../exception/BadRequestException')
+const { ERROR_CODE_ACCOUNT_INFO, ERROR_MESS_ACCOUNT_INFO } = require('../constant/AppConstant')
 
 async function create( req ){
     const { username, password } = req
@@ -21,8 +23,11 @@ async function create( req ){
 
 async function login(req){
     const currentUser = await verify(req)
+    if(!currentUser){
+        throw new BadRequestException(ERROR_MESS_ACCOUNT_INFO,ERROR_CODE_ACCOUNT_INFO)
+    }
     let user = await User.findOne({cif: currentUser.cif})
-    console.log('===user===',currentUser);
+
     if(!user){
         user = new User({
             cif: currentUser.cif,
@@ -36,8 +41,7 @@ async function login(req){
 
         user.save()
     }
-    return genarateToken(currentUser)
-
+    return {token: `Bearer ${genarateToken(currentUser)}`}
 }
 
 function genarateToken(user){

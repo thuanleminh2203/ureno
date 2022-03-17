@@ -57,8 +57,8 @@ async function getInvoice(body = {}){
         })
     
         const data = await response.json()
+        console.log('====data===', data)
         return data.Data
-        // console.log('====data===', data)
     }catch(err){
         console.log('===err when call getInvoice ===', err)
         throw err

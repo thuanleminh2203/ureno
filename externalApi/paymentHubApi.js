@@ -17,7 +17,7 @@ async function verify(body){
     
         console.log('====data===', data)
 
-        return {
+        return data && data.code === 400 ? null : {
             cif: data.cif,
             fullname: data.fullname,
             mobile: data.mobile,

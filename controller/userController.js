@@ -5,7 +5,6 @@ const userService = require('../service/userService')
 const authorization = require('../middleware/authorization')
 
 router.get('/:customerCode', authorization(),(req,res,next) => {
-    console.log('==customerCode==',req.params.customerCode)
     userService.getAll()
     .then((users) => res.json(users))
     .catch(err => next(err))

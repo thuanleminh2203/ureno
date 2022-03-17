@@ -8,6 +8,28 @@ const crypto = require('crypto')
 const { getInvoice } = require('../externalApi/urenoApi')
 
 
+/**
+ * @swagger
+ * /oauth/login:
+ *   post:
+ *     summary: login
+ *     tags: [Oauth]
+ *     parameters:
+ *       - in: body
+ *         name: login
+ *         description: The user to create.
+ *         schema:
+ *           type: object
+ *           required:
+ *             - token
+ *           properties:
+ *             token:
+ *               type: string
+ *               require: true
+ *     responses:
+ *       200:
+ *         description: token login
+ */
 router.post('/login', validateRequestSchema(loginSchema) , (req,res,next) => {
     const { body } = req
 

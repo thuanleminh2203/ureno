@@ -8,12 +8,17 @@ const BadRequestException = require('../exception/BadRequestException')
 
 async function getAll( customerCode ){
     const customer = await getCustomerInfo({CustomerCode: customerCode})
-    console.log('===customer===',customer)
     if(!customer){
         throw new BadRequestException('Tai khoan khong chinh xac')
     }
     const data = await getInvoice({CustomerCode: customerCode})
-    return data
+    return data ? data : {
+        NumRow: 0,
+        CustomerCode: customer.CustomerCode,
+        CustomerName: customer.CustomerName,
+        Address: customer.Address,
+        Invoices: []
+    }
 }
 
 module.exports = {
